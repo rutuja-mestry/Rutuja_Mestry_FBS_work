@@ -1,0 +1,123 @@
+-- ===============================
+-- MySQL Assignment - 3 (DQL)
+-- ===============================
+
+-- 1
+SELECT first_name AS "First Name",
+       last_name  AS "Last Name"
+FROM employees;
+
+-- 2
+SELECT DISTINCT department_id
+FROM employees;
+
+-- 3
+SELECT *
+FROM employees
+ORDER BY first_name DESC;
+
+-- 4
+SELECT first_name,
+       last_name,
+       salary,
+       salary * 0.15 AS PF
+FROM employees;
+
+-- 5
+SELECT employee_id,
+       first_name,
+       last_name,
+       salary
+FROM employees
+ORDER BY salary ASC;
+
+-- 6
+SELECT SUM(salary) AS Total_Salary
+FROM employees;
+
+-- 7
+SELECT MAX(salary) AS Maximum_Salary,
+       MIN(salary) AS Minimum_Salary
+FROM employees;
+
+-- 8
+SELECT AVG(salary) AS Average_Salary,
+       COUNT(*) AS Number_Of_Employees
+FROM employees;
+
+-- 9
+SELECT COUNT(*) AS Total_Employees
+FROM employees;
+
+-- 10
+SELECT COUNT(DISTINCT job_id) AS Number_Of_Jobs
+FROM employees;
+
+-- 11
+SELECT *
+FROM employees
+LIMIT 10;
+
+-- 12
+SELECT first_name,
+       last_name,
+       salary
+FROM employees
+WHERE salary NOT BETWEEN 10000 AND 15000;
+
+-- 13
+SELECT first_name,
+       last_name,
+       department_id
+FROM employees
+WHERE department_id IN (30,100)
+ORDER BY department_id ASC;
+
+-- 14
+SELECT first_name,
+       last_name,
+       salary
+FROM employees
+WHERE salary NOT BETWEEN 10000 AND 15000
+AND department_id IN (30,100);
+
+-- 15
+SELECT first_name,
+       last_name,
+       hire_date
+FROM employees
+WHERE YEAR(hire_date) = 1987;
+
+-- 16
+SELECT first_name
+FROM employees
+WHERE first_name LIKE '%b%'
+AND first_name LIKE '%c%';
+
+-- 17
+SELECT last_name,
+       job_id,
+       salary
+FROM employees
+WHERE job_id IN ('IT_PROG','SH_CLERK')
+AND salary NOT IN (4500,10000,15000);
+
+-- 18
+SELECT last_name
+FROM employees
+WHERE LENGTH(last_name) = 6;
+
+-- 19
+SELECT last_name
+FROM employees
+WHERE last_name LIKE '__e%';
+
+-- 20
+SELECT DISTINCT job_id
+FROM employees;
+
+-- 21
+SELECT *
+FROM employees
+WHERE last_name IN ('BLAKE','SCOTT','KING','FORD')
+AND YEAR(hire_date) = 1987;

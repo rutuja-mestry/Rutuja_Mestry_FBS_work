@@ -1,0 +1,152 @@
+-- ===============================
+-- AIRLINE RESERVATION SYSTEM
+-- ===============================
+
+CREATE DATABASE AirlineDB;
+USE AirlineDB;
+
+-- ===============================
+-- TABLE CREATION
+-- ===============================
+
+CREATE TABLE Aircraft (
+    AircraftID INT PRIMARY KEY,
+    RegistrationNo VARCHAR(20),
+    Model VARCHAR(50),
+    TotalSeats INT
+);
+
+CREATE TABLE Flight (
+    FlightID INT PRIMARY KEY,
+    FlightNumber VARCHAR(20),
+    Origin VARCHAR(50),
+    Destination VARCHAR(50),
+    DepartureTime DATETIME,
+    ArrivalTime DATETIME,
+    AircraftID INT,
+    FOREIGN KEY (AircraftID) REFERENCES Aircraft(AircraftID)
+);
+
+CREATE TABLE Passenger (
+    PassengerID INT PRIMARY KEY,
+    Name VARCHAR(100),
+    Phone VARCHAR(15),
+    Email VARCHAR(100),
+    SeatPreference VARCHAR(20)
+);
+
+CREATE TABLE Booking (
+    BookingID INT PRIMARY KEY,
+    PassengerID INT,
+    BookingDate DATE,
+    Status VARCHAR(20),
+    TotalAmount DECIMAL(10,2),
+    PaymentStatus VARCHAR(20),
+    FOREIGN KEY (PassengerID) REFERENCES Passenger(PassengerID)
+);
+
+CREATE TABLE Booking_Flight (
+    BookingID INT,
+    FlightID INT,
+    SeatNumber VARCHAR(5),
+    Class VARCHAR(20),
+    PRIMARY KEY (BookingID, FlightID),
+    FOREIGN KEY (BookingID) REFERENCES Booking(BookingID),
+    FOREIGN KEY (FlightID) REFERENCES Flight(FlightID)
+);
+
+CREATE TABLE Crew (
+    CrewID INT PRIMARY KEY,
+    Name VARCHAR(100),
+    Role VARCHAR(50),
+    Phone VARCHAR(15)
+);
+
+CREATE TABLE Flight_Crew (
+    FlightID INT,
+    CrewID INT,
+    PRIMARY KEY (FlightID, CrewID),
+    FOREIGN KEY (FlightID) REFERENCES Flight(FlightID),
+    FOREIGN KEY (CrewID) REFERENCES Crew(CrewID)
+);
+
+CREATE TABLE Itinerary (
+    ItineraryID INT PRIMARY KEY,
+    PassengerID INT,
+    FOREIGN KEY (PassengerID) REFERENCES Passenger(PassengerID)
+);
+
+CREATE TABLE Itinerary_Flight (
+    ItineraryID INT,
+    FlightID INT,
+    SequenceNo INT,
+    PRIMARY KEY (ItineraryID, FlightID),
+    FOREIGN KEY (ItineraryID) REFERENCES Itinerary(ItineraryID),
+    FOREIGN KEY (FlightID) REFERENCES Flight(FlightID)
+);
+
+CREATE TABLE Fare (
+    FareID INT PRIMARY KEY,
+    Origin VARCHAR(50),
+    Destination VARCHAR(50),
+    Class VARCHAR(20),
+    Price DECIMAL(10,2)
+);
+
+-- ===============================
+-- INSERT DATA (10 RECORDS EACH)
+-- ===============================
+
+INSERT INTO Aircraft VALUES
+(1,'VT-AX1','Airbus A320',180),
+(2,'VT-BX2','Boeing 737',189),
+(3,'VT-CX3','Airbus A321',220),
+(4,'VT-DX4','Boeing 777',300),
+(5,'VT-EX5','ATR 72',78),
+(6,'VT-FX6','Boeing 787',290),
+(7,'VT-GX7','Airbus A319',150),
+(8,'VT-HX8','Boeing 747',350),
+(9,'VT-IX9','Embraer E190',100),
+(10,'VT-JX10','Airbus A330',250);
+
+INSERT INTO Flight VALUES
+(1,'AI101','Mumbai','Delhi','2026-03-01 10:00','2026-03-01 12:00',1),
+(2,'AI102','Delhi','Mumbai','2026-03-01 14:00','2026-03-01 16:00',2),
+(3,'AI201','Pune','Bangalore','2026-03-02 09:00','2026-03-02 11:00',3),
+(4,'AI202','Bangalore','Pune','2026-03-02 13:00','2026-03-02 15:00',4),
+(5,'AI301','Chennai','Hyderabad','2026-03-03 08:00','2026-03-03 09:30',5),
+(6,'AI302','Hyderabad','Chennai','2026-03-03 17:00','2026-03-03 18:30',6),
+(7,'AI401','Kolkata','Delhi','2026-03-04 07:00','2026-03-04 09:00',7),
+(8,'AI402','Delhi','Kolkata','2026-03-04 18:00','2026-03-04 20:00',8),
+(9,'AI501','Ahmedabad','Mumbai','2026-03-05 06:00','2026-03-05 07:30',9),
+(10,'AI502','Mumbai','Ahmedabad','2026-03-05 21:00','2026-03-05 22:30',10);
+
+INSERT INTO Passenger VALUES
+(1,'Rutuja Mestry','9876543210','rutuja@gmail.com','Window'),
+(2,'Amit Sharma','9876543211','amit@gmail.com','Aisle'),
+(3,'Neha Patil','9876543212','neha@gmail.com','Window'),
+(4,'Rahul Singh','9876543213','rahul@gmail.com','Middle'),
+(5,'Sneha Iyer','9876543214','sneha@gmail.com','Window'),
+(6,'Vikas Rao','9876543215','vikas@gmail.com','Aisle'),
+(7,'Pooja Mehta','9876543216','pooja@gmail.com','Window'),
+(8,'Karan Joshi','9876543217','karan@gmail.com','Middle'),
+(9,'Anjali Verma','9876543218','anjali@gmail.com','Aisle'),
+(10,'Rohit Gupta','9876543219','rohit@gmail.com','Window');
+
+INSERT INTO Booking VALUES
+(1,1,'2026-02-25','Confirmed',5000,'Paid'),
+(2,2,'2026-02-25','Confirmed',4500,'Paid'),
+(3,3,'2026-02-26','Pending',3000,'Unpaid'),
+(4,4,'2026-02-26','Cancelled',6000,'Refunded'),
+(5,5,'2026-02-27','Confirmed',7000,'Paid'),
+(6,6,'2026-02-27','Confirmed',3500,'Paid'),
+(7,7,'2026-02-28','Confirmed',8000,'Paid'),
+(8,8,'2026-02-28','Pending',4000,'Unpaid'),
+(9,9,'2026-02-28','Confirmed',5500,'Paid'),
+(10,10,'2026-02-28','Confirmed',6500,'Paid');
+
+-- (You can similarly add data for Crew, Flight_Crew, Itinerary, Fare if needed)
+
+-- ===============================
+-- END OF PROJECT
+-- ===============================

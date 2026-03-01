@@ -1,0 +1,65 @@
+-- ===============================
+-- Assignment 3 (DML)
+-- ===============================
+
+-- 1) Insert records into Employees table
+INSERT INTO employees 
+(employee_id, first_name, last_name, email, phone_number, hire_date, job_id, salary, commission_pct, manager_id, department_id)
+VALUES
+(100,'Steven','King','SKING','515.123.4567','1987-06-17','AD_PRES',24000,0.00,200,90),
+(101,'Neena','Kochhar','NKOCHHAR','515.123.4568','1987-06-18','AD_VP',17000,0.00,200,90),
+(102,'Lex','De Haan','LDEHAAN','515.123.4569','1987-06-19','AD_VP',17000,0.00,200,90),
+(103,'Alexander','Hunold','AHUNOLD','590.423.4567','1987-06-20','IT_PROG',9000,0.00,103,60),
+(104,'Bruce','Ernst','BERNST','590.423.4568','1987-06-21','IT_PROG',6000,0.00,103,60),
+(105,'David','Austin','DAUSTIN','590.423.4569','1987-06-22','IT_PROG',4800,0.00,103,60),
+(106,'Valli','Pataballa','VPATABAL','590.423.4560','1987-06-23','IT_PROG',4800,0.00,103,60),
+(107,'Diana','Lorentz','DLORENTZ','590.423.4561','1987-06-24','IT_PROG',4200,0.00,114,60),
+(108,'Nancy','Greenberg','NGREENBE','515.124.4569','1987-06-25','SA_MAN',12000,0.00,145,80),
+(109,'Daniel','Faviet','DFAVIET','515.124.4169','1987-06-26','SA_MAN',9000,0.00,145,80);
+
+-- Department insert
+INSERT INTO departments (department_id, department_name, manager_id, location_id) VALUES
+(10,'Administration',200,1700),
+(20,'Marketing',201,1800),
+(30,'Purchasing',114,1700),
+(40,'Human Resources',203,2400),
+(50,'Shipping',121,1500),
+(60,'IT',103,1400),
+(70,'Public Relations',204,2700),
+(80,'Sales',145,2500);
+
+-- 2) Insert 3 rows in single insert
+INSERT INTO jobs (job_id, job_title, min_salary, max_salary) VALUES
+('AD_ASST','Administration Assistant',3000,6000),
+('FI_MGR','Finance Manager',8200,16000),
+('PU_MAN','Purchasing Manager',8000,15000);
+
+-- 3) Insert job ensuring no duplicate job_id (job_id must be PK/UNIQUE)
+INSERT INTO jobs (job_id, job_title, min_salary, max_salary)
+VALUES ('HR_REP','HR Representative',4000,9000);
+
+-- 4) Increase salary of each employee by 10%
+UPDATE employees
+SET salary = salary + (salary * 0.10);
+
+-- 5) Change email to 'not available' 
+-- for dept_id = 80 and commission < 0.20
+UPDATE employees
+SET email = 'not available'
+WHERE department_id = 80
+AND commission_pct < 0.20;
+
+-- 6) Change email to 'not available' 
+-- for employees in Purchasing department
+UPDATE employees
+SET email = 'not available'
+WHERE department_id = (
+    SELECT department_id 
+    FROM departments 
+    WHERE department_name = 'Purchasing'
+);
+
+-- 7) Change email and commission_pct for all employees
+UPDATE employees
+SET email = 'not available',
+    commission_pct = 0.10;

@@ -1,0 +1,65 @@
+-- 1) Show all databases
+SHOW DATABASES;
+
+-- 2) Create countries table
+CREATE TABLE countries (
+    country_id INT,
+    country_name VARCHAR(20),
+    region_id INT
+);
+
+-- 3) Create jobs table with constraints
+CREATE TABLE jobs (
+    job_id INT PRIMARY KEY,
+    job_title VARCHAR(35) NOT NULL,
+    min_salary DECIMAL(10,2),
+    max_salary DECIMAL(10,2),
+    CHECK (max_salary <= 25000)
+);
+
+-- 4) Create job_history table
+CREATE TABLE job_history (
+    employee_id INT,
+    start_date DATE,
+    end_date DATE,
+    job_id INT,
+    department_id INT
+);
+
+-- 5) Alter countries table to prevent duplicate country_id
+ALTER TABLE countries
+ADD CONSTRAINT uk_country UNIQUE (country_id);
+
+-- 6) Create jobs table with default values
+CREATE TABLE jobs_default (
+    job_id INT,
+    job_title VARCHAR(35) DEFAULT '',
+    min_salary DECIMAL(10,2) DEFAULT 8000,
+    max_salary DECIMAL(10,2) DEFAULT NULL
+);
+
+-- 7) Create departments table
+CREATE TABLE departments (
+    department_id DECIMAL(4,0) PRIMARY KEY,
+    department_name VARCHAR(30) NOT NULL,
+    manager_id DECIMAL(6,0),
+    location_id DECIMAL(4,0),
+    UNIQUE (manager_id)
+);
+
+-- 8) Create employees table with constraints
+CREATE TABLE employees (
+    employee_id INT PRIMARY KEY,
+    first_name VARCHAR(30),
+    last_name VARCHAR(30),
+    email VARCHAR(50) UNIQUE,
+    phone_number VARCHAR(20),
+    hire_date DATE,
+    job_id INT,
+    salary DECIMAL(10,2),
+    commission DECIMAL(5,2),
+    manager_id DECIMAL(6,0),
+    department_id DECIMAL(4,0),
+    FOREIGN KEY (department_id, manager_id)
+    REFERENCES departments(department_id, manager_id)
+);

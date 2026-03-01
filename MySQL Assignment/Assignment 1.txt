@@ -1,0 +1,117 @@
+mysql> -- Create Database
+mysql> CREATE DATABASE HotelManagement;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> USE HotelManagement;
+Database changed
+mysql> 
+mysql> -- Customer Table
+mysql> CREATE TABLE Customer (
+    ->     customer_id INT PRIMARY KEY AUTO_INCREMENT,
+    ->     name VARCHAR(100) NOT NULL,
+    ->     email VARCHAR(100) UNIQUE NOT NULL,
+    ->     phone VARCHAR(15),
+    ->     password VARCHAR(100) NOT NULL,
+    ->     address TEXT
+    -> );
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> 
+mysql> -- Room Table
+mysql> CREATE TABLE Room (
+    ->     room_id INT PRIMARY KEY AUTO_INCREMENT,
+    ->     room_number INT UNIQUE NOT NULL,
+    ->     room_type ENUM('Basic', 'Luxury') NOT NULL,
+    ->     rent_per_day DECIMAL(10,2) NOT NULL,
+    ->     status ENUM('Available', 'Booked') DEFAULT 'Available'
+    -> );
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> 
+mysql> -- Booking Table
+mysql> CREATE TABLE Booking (
+    ->     booking_id INT PRIMARY KEY AUTO_INCREMENT,
+    ->     customer_id INT,
+    ->     room_id INT,
+    ->     check_in DATE NOT NULL,
+    ->     check_out DATE NOT NULL,
+    ->     total_days INT,
+    ->     booking_status ENUM('Confirmed', 'Cancelled') DEFAULT 'Confirmed',
+    ->     FOREIGN KEY (customer_id) REFERENCES Customer(customer_id),
+    ->     FOREIGN KEY (room_id) REFERENCES Room(room_id)
+    -> );
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> 
+mysql> -- Food Menu Table
+mysql> CREATE TABLE Food_Menu (
+    ->     food_id INT PRIMARY KEY AUTO_INCREMENT,
+    ->     food_name VARCHAR(100) NOT NULL,
+    ->     price DECIMAL(10,2) NOT NULL
+    -> );
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> 
+mysql> -- Food Order Table
+mysql> CREATE TABLE Food_Order (
+    ->     order_id INT PRIMARY KEY AUTO_INCREMENT,
+    ->     booking_id INT,
+    ->     food_id INT,
+    ->     quantity INT NOT NULL,
+    ->     total_amount DECIMAL(10,2),
+    ->     FOREIGN KEY (booking_id) REFERENCES Booking(booking_id),
+    ->     FOREIGN KEY (food_id) REFERENCES Food_Menu(food_id)
+    -> );
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> 
+mysql> -- Laundry Table
+mysql> CREATE TABLE Laundry (
+    ->     laundry_id INT PRIMARY KEY AUTO_INCREMENT,
+    ->     booking_id INT,
+    ->     no_of_clothes INT NOT NULL,
+    ->     rate_per_cloth DECIMAL(5,2) DEFAULT 20.00,
+    ->     total_amount DECIMAL(10,2),
+    ->     FOREIGN KEY (booking_id) REFERENCES Booking(booking_id)
+    -> );
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> 
+mysql> -- Site Visit Table
+mysql> CREATE TABLE Site_Visit (
+    ->     visit_id INT PRIMARY KEY AUTO_INCREMENT,
+    ->     booking_id INT,
+    ->     vehicle_type VARCHAR(50),
+    ->     per_day_charge DECIMAL(10,2),
+    ->     no_of_days INT,
+    ->     total_amount DECIMAL(10,2),
+    ->     FOREIGN KEY (booking_id) REFERENCES Booking(booking_id)
+    -> );
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> 
+mysql> -- Invoice Table
+mysql> CREATE TABLE Invoice (
+    ->     invoice_id INT PRIMARY KEY AUTO_INCREMENT,
+    ->     booking_id INT UNIQUE,
+    ->     room_charges DECIMAL(10,2),
+    ->     food_charges DECIMAL(10,2),
+    ->     laundry_charges DECIMAL(10,2),
+    ->     sitevisit_charges DECIMAL(10,2),
+    ->     total_amount DECIMAL(10,2),
+    ->     payment_status ENUM('Paid', 'Unpaid') DEFAULT 'Unpaid',
+    ->     invoice_date DATE,
+    ->     FOREIGN KEY (booking_id) REFERENCES Booking(booking_id)
+    -> );
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> 
+mysql> -- Sample Room Data
+mysql> INSERT INTO Room (room_number, room_type, rent_per_day)
+    -> VALUES 
+    -> (101, 'Basic', 1000),
+    -> (102, 'Basic', 1000),
+    -> (201, 'Luxury', 3000),
+    -> (202, 'Luxury', 3000);
+Query OK, 4 rows affected (0.01 sec)
+Records: 4  Duplicates: 0  Warnings: 0
